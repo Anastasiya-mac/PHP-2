@@ -4,9 +4,10 @@ namespace services;
 
 class Autoloader
 {
+    public $file = '.php';
     public function loadClass(string $classname) {
         $classname = str_replace ( "\\", "/", $classname);
-        $filename = $_SERVER['DOCUMENT_ROOT'] . "/myFolder/{$classname}.php";
+        $filename = ROOT_DIR . "{$classname}" . $this->file;
         if (file_exists($filename)) {
             require $filename;
             return true;

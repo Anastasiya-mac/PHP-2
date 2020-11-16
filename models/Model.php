@@ -2,6 +2,7 @@
 
 namespace models;
 use interfaces\ModelInterface;
+use services\Db;
 
 abstract class Model implements ModelInterface
 {
@@ -10,19 +11,24 @@ abstract class Model implements ModelInterface
 
     public function __construct() 
     {
-        $this->db = new Db();
+        $this->db = Db::getInstance();
         $this->tablename = $this->getTableName();
     }
 
-    public function GetByID(int $id)
+    public function getById(int $id)
     {
-        $sql = "SELECT * FROM {$this->tablename} WHERE id = {$id}";
-        return $this->db->queryOne($sql);
+        $sql = "SELECT * FROM {$this->tablename} WHERE id = :id";
+        return $this->db->queryOne($sql, [':id'=>$id]);
     }
 
-    public function GetAll()
+    public function getAll()
     {
         $sql = "SELECT * FROM {$this->tablename}";
         return $this->db->queryAll($sql);
+    }
+
+    public function delete(int $id) {
+        $sql = "DELETE FROM {$this->tablename} WHERE id = :id";
+        return $this->db->queryOne($sql, [':id'=>$id]);
     }
 }

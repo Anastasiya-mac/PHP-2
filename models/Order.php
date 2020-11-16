@@ -5,20 +5,21 @@ namespace models;
 class Order extends Model
 {
     public $orderId;
-    public $productId;
     public $userId;
-    public $unitPrice;
-    public $qty;
-    //метод получения средней стоимости продуктов, которые покупает пользователь, например, для анализа покупательской способности
-    public function getAvgPriceForProduct($userID) {
-        $sql = " SELECT UserID, AVG(TotalDue) FROM {$this->tablename} WHERE UserId = $userID GROUP BY UserId";
-        return $this->db->queryOne($sql);
-    }
+    public $dateOrder;
     
-    public function getUserByID($userId) {
-   
-    }
     public function getTableName(): string {
-        return 'order';
+        return 'orders';
+    }
+
+    public function insert(int $orderId, int $userId, string $dateOrder) {
+        
+        $sql = "INSERT INTO {$this->tablename} (id, user_id, dateOrder) VALUES (:id, :user_id, :dateOrder)";
+        return $this->db->queryAll($sql, [':id'=>$orderId, ':user_id'=>$userId, ':dateOrder'=>$dateOrder]);
+    }
+
+    public function update(int $orderId, int $userId, string $dateOrder) {
+        $sql = "UPDATE {$this->tablename} SET  user_id=:user_id, dateOrder=:dateOrder WHERE id = :id";
+        return $this->db->queryAll($sql, [':id'=>$orderId, ':user_id'=>$userId, ':dateOrder'=>$dateOrder]);
     }
 }
