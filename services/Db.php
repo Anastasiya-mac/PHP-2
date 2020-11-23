@@ -21,7 +21,6 @@ class Db
         if (is_null($this->connection)) {
             $this->connection = new \PDO($this->buildDsnString(), $this->config['login'], $this->config['password']);
            $this->connection->setAttribute(\PDO::ATTR_DEFAULT_FETCH_MODE, \PDO::FETCH_ASSOC);
-         //  $this->connection->setFetchMode(PDO::FETCH_CLASS, '\\');
         }
         return $this->connection;
     }
@@ -41,15 +40,25 @@ class Db
         
     }
 
-    public function queryOne(string $sql, array $params=[]) {
-        return $this->queryAll($sql, $params)[0];
+    public function queryOne(string $sql, array $params=[], string $classname = null) {
+        return $this->queryAll($sql, $params, $classname)[0];
     }
 
-    public function queryAll(string $sql, array $params=[]) {
-        return $this->query($sql, $params)->fetchAll();
+    public function queryAll(string $sql, array $params = [], string $classname = null) {
+        $pdoStatement = $this->query($sql, $params);
+        if(isset($classname)) {
+            $pdoStatement->setFetchMode(\PDO::FETCH_CLASS|\PDO::FETCH_PROPS_LATE, $classname);
+        }
+        return $pdoStatement->fetchAll();
     }
 
-    public function execute(string $sql, array $params=[]) {
+    public function execute(string $sql, array $params = []) {
         return $this->query($sql, $params)->rowCount();
     }
+    
+    public function getLastInsertId()
+    {
+        return $this->getConnection()->lastInsertId();
+    }
+    
 }
