@@ -2,13 +2,20 @@
 
 namespace controllers;
 use models\Product;
+use services\Render;
+use services\TwigRenderer;
 
-class ParentController 
+class Controller 
 {
     protected $defaultAction = 'index';
     protected $action;
     protected $useLayout = true;
     protected $layout = 'main';
+    protected $renderer; 
+
+    public function __construct () {
+        $this->renderer = new Render();
+    }
 
     public function runAction($action = null)
     {
@@ -27,10 +34,10 @@ class ParentController
     }
 
     protected function render($template, $params = []){
-        $content = $this->renderTemplate($template, $params);
-
+        
+        $content = $this->renderer->render($template, $params);
         if($this->useLayout) {
-            return $this->renderTemplate(
+            return $this->renderer->render( 
                 "layouts/{$this->layout}",
                 ['content' => $content]
             );
@@ -38,11 +45,5 @@ class ParentController
         return $content;
     }
 
-    protected function renderTemplate($template, $params = []) {
-        ob_start();
-        $templatePath = VIEWS_DIR . $template . ".php";
-        extract($params);
-        include $templatePath;
-        return ob_get_clean();
-    }
+    
 }

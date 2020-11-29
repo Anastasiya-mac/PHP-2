@@ -1,0 +1,12 @@
+{
+    "name": "sunshine_0803mail.ru/my-folder",
+    "authors": [
+        {
+            "name": "Anastasiya-mac",
+            "email": "sunshine_0803@mail.ru"
+        }
+    ],
+    "require": {
+        "twig/twig": "^2.13"
+    }
+}

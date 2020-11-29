@@ -1,11 +1,15 @@
 <?php
 
 namespace controllers;
+use models\Record;
 use models\Product;
-use controllers\ParentController;
+use controllers\Controller;
 
-class CatalogController extends ParentController
+class CatalogController extends Controller
 {
+    public function actionIndex() {
+        echo 'CATALOG';
+    }
 
     public function actionView() {
         $model = (new Product())::getAll();

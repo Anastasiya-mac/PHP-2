@@ -58,6 +58,9 @@ abstract class Record implements ModelInterface
 
 }
 
+    public function post($name) {
+        return $_POST[$name];
+    }
     public function insert() {
         $tablename = static::getTableName();
         $params = [];
