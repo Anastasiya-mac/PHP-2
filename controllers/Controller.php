@@ -26,7 +26,7 @@ class Controller
             $this->$method();
             
         } else {
-            echo "404";
+            throw new \Exception("Метод не найден");
         }
     }
     public function actionIndex() {

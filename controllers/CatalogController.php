@@ -1,9 +1,9 @@
 <?php
 
 namespace controllers;
-use models\Record;
-use models\Product;
+
 use controllers\Controller;
+use models\repositories\ProductRepository;
 
 class CatalogController extends Controller
 {
@@ -12,7 +12,7 @@ class CatalogController extends Controller
     }
 
     public function actionView() {
-        $model = (new Product())::getAll();
+        $model = (new ProductRepository())->getAll();
         echo $this->render('catalog', ['model' => $model]);
     }
 }

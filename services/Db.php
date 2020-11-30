@@ -25,6 +25,7 @@ class Db
         return $this->connection;
     }
 
+
     private function buildDsnString() {
         return sprintf('%s:host=%s;dbname=%s;charset=%s', 
             $this->config['driver'],

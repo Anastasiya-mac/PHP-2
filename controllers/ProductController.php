@@ -1,9 +1,12 @@
 <?php
 
 namespace controllers;
-use models\Product;
+
 use controllers\Controller;
-use services\TwigRenderer;
+//use services\TwigRenderer;
+use models\repositories\ProductRepository;
+use base\Request;
+
 
 class ProductController extends Controller
 {
@@ -11,9 +14,10 @@ class ProductController extends Controller
     
     public function actionCard()
     {
-        //$this->useLayout = false;
-        $id = $_GET['id'];
-        $model = Product::getById($id);
+        $this->useLayout = false;        
+        //$id = (new Request())->get('id');
+        $id = (new Request())->getMethod('id');      
+        $model = (new ProductRepository())->getById($id);
         echo $this->render('product_card', ['model' => $model]);
 
         if ($_SERVER['REQUEST_METHOD'] == "POST") {
