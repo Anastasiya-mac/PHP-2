@@ -11,7 +11,6 @@ class Request
     protected $isGet = true;
     protected $isAjax = false;
 
-    //controller/action&id=1
 
     protected $urlPattern = "#MyFolder/public/\?(?P<controller>\w+)[/]?(?P<action>\w+)?[/]?[?]?(?P<get>.*)#ui";
 
