@@ -2,6 +2,8 @@
 
 namespace models;
 
+use models\repositories\Repository;
+
 class User extends Record
 {
     public $id;
@@ -9,18 +11,4 @@ class User extends Record
     public $password;
     public $email;
 
-
-    static public function getTableName(): string {
-        return 'users';
-    }
-
-    public function getUserByLogin($login) {
-        $tablename = static::getTableName();
-        $sql = "SELECT * FROM {$tablename} WHERE login = :login";
-        return  static::getQuery($sql, [':login' => $login])[0];
-    }
-
-    public function getHash($string) {
-        return md5($string . "d5f8");
-    }
 }

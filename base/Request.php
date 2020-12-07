@@ -10,6 +10,7 @@ class Request
     protected $isPost = false;
     protected $isGet = true;
     protected $isAjax = false;
+    protected $method;
 
     //controller/action&id=1
 
@@ -19,26 +20,7 @@ class Request
     {
         $this->requestString = $_SERVER['REQUEST_URI'];
         $this->parseRequest();
-    }
-
-    public function getMethod(string $name)
-    {
-        if (!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && (mb_strtolower($_SERVER['HTTP_X_REQUESTED_WITH'] == 'xmlhttprequest'))) {
-            echo 'ajax';
-            exit;
-        }
-        
-        $method = $_SERVER['REQUEST_METHOD'];
-        //var_dump($method);
-         if ($method == 'GET') {
-             echo 'get';
-            $result = $this->get($name);
-         } elseif ($method == 'POST') {
-            echo 'post';
-            $result = $this->post($name);
-         }
-            
-         return $result;
+        $this->method = $_SERVER['REQUEST_METHOD'];
     }
 
     protected function parseRequest()
@@ -50,9 +32,16 @@ class Request
         }
     }
 
+    public function getMethod() {
+        if ($this->method == 'GET') {
+            return 'GET';
+         } elseif ($this->method == 'POST') {
+            return 'POST';
+         }
+    }
+
     public function get(string $name)
     {
-        //var_dump($GET[$name]);
         return $_GET[$name];
     }
 

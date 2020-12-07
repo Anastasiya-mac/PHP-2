@@ -10,7 +10,7 @@ abstract class Repository
 
     public function __construct() 
     {
-        $this->db = Db::getInstance();
+        $this->db = \base\Application::getInstance()->db;
         $this->tablename = $this->getTableName();
     }
 
@@ -30,7 +30,7 @@ abstract class Repository
     }
 
     protected function getQuery($sql, $params = []) {
-        return Db::getInstance()->queryAll($sql,$params, $this->getRecordClassname());
+        return \base\Application::getInstance()->db->queryAll($sql,$params, $this->getRecordClassname());
     }
 
     public function delete(Record $record) {
@@ -115,12 +115,6 @@ abstract class Repository
         $sql = "UPDATE {$tablename} SET {$columns} WHERE id = :id";
         $this->db->execute($sql, $params);
     }
-    
-
-    public function post($name) {
-        return $_POST[$name];
-    }
-
 
     abstract public function getTableName(): string;
 

@@ -6,14 +6,19 @@ use traits\Singleton;
 class Db
 {
     use Singleton;
-    public $config = [
-        'driver' => 'mysql',
-        'host' => 'localhost',
-        'login' => 'root',
-        'password' => '',
-        'database' => 'GB_DB_PHP',
-        'charset' => 'utf8'
-    ];
+   
+    public $config;
+
+    public function __construct($driver, $host, $login, $password, $database, $charset) {
+        $this->config = [
+            'driver' => $driver,
+            'host' => $host,
+            'login' => $login,
+            'password' => $password,
+            'database' => $database,
+            'charset' => $charset
+        ];
+    }
 
     private $connection = null;
 
@@ -35,6 +40,7 @@ class Db
     }
 
     private function query(string $sql, array $params=[]) {
+        echo $sql;
         $pdoStatement = $this->getConnection()->prepare($sql);
         $pdoStatement->execute($params);
         return $pdoStatement;

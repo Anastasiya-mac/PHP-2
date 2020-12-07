@@ -5,7 +5,7 @@ use models\Product;
 use services\Render;
 use services\TwigRenderer;
 
-class Controller 
+abstract class Controller 
 {
     protected $defaultAction = 'index';
     protected $action;
@@ -14,7 +14,7 @@ class Controller
     protected $renderer; 
 
     public function __construct () {
-        $this->renderer = new Render();
+        $this->renderer = \base\Application::getInstance()->renderer;
     }
 
     public function runAction($action = null)

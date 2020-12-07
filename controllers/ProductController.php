@@ -6,32 +6,26 @@ use controllers\Controller;
 //use services\TwigRenderer;
 use models\repositories\ProductRepository;
 use base\Request;
+use base\Application;
 
 
 class ProductController extends Controller
 {
 
+    public function actionIndex() {
+        echo 'CARDD';
+    }
     
     public function actionCard()
     {
-        $this->useLayout = false;        
-        //$id = (new Request())->get('id');
-        $id = (new Request())->getMethod('id');      
-        $model = (new ProductRepository())->getById($id);
-        echo $this->render('product_card', ['model' => $model]);
-
-        if ($_SERVER['REQUEST_METHOD'] == "POST") {
-            session_start();
-            $productId = $model->post('product_id');
-            $productQty = $model->post('qty');
-
-            if (isset($_SESSION['cart'][$productId])) {
-                $_SESSION['cart'][$productId] += $productQty;
-            } else {
-                $_SESSION['cart'][$productId] = $productQty;
-            }
+        //$this->useLayout = false;   
+        $request = new Request();
+        if ($request->getMethod() == "GET") {     
+            $id = \base\Application::getInstance()->request->get('id');
+            $model = (new ProductRepository())->getById($id);
+            echo $this->render('product_card', ['model' => $model]);
+            //var_dump($_SESSION['cart'][$productId]);
         }
-        //var_dump($_SESSION['cart'][$productId]);
 
     }
 }

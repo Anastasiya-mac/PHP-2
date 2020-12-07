@@ -1,9 +1,9 @@
 <?php
 
 namespace controllers;
-use models\User;
+use base\Request;
 use controllers\Controller;
-
+use models\repositories\UserRepository;
 
 class UserController extends Controller
 {
@@ -15,15 +15,17 @@ class UserController extends Controller
 
     public function actionAuth() {
         echo $this->render('authorization', []);
-        if($_SERVER['REQUEST_METHOD'] == 'POST') {
-            $model = new User();
+        $model = \base\Application::getInstance()->request;
+        if($model->getMethod() == 'POST') {
             $login = $model->post('login');
             $password = $model->post('password');
-            $model = User::getUserByLogin($login);
-            
-            foreach($model as $key=>$value) {
+            $model = (new UserRepository);
+            $getUser = $model->getUserByLogin($login);
+           
+            foreach($getUser as $key=>$value) {
                 $params[":{$key}"] = $value;
             }
+            
             if ($params[':password'] == $model->getHash($password))
             {
                 session_start();
